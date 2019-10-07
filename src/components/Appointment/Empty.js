@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from 'react';
 
 export default function Empty(props) {
 return (
-  <main className="appointment_add">
+  <main className="appointment__add">
     <img
       className="appointment__add-button"
       src="images/add.png"

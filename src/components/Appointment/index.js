@@ -7,17 +7,16 @@ import "./styles.scss";
 
 
   export default function Appointment(props) {
-   
+   console.log(props)
+    const appointment = props.interview 
+    ? <Show student={props.interview.student} interviewer={props.interview.interviewer} /> 
+    : <Empty />
 
     return (
-      <Header time= {props.time}>
-        { props.interview 
-        ? <Show />
-        : <Empty />
-        } 
-      </Header>
-     
-    
+      <Fragment>
+        <Header time={props.time} />
+        {appointment}
+      </Fragment>
     );
   }
 
