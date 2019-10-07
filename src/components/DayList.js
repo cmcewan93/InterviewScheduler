@@ -8,7 +8,7 @@ export default function DayList(props) {
 
 const items = props.days.map((item) => {
     //console.log(item.name, ' vssss ', props.day)
-    console.log(item.name, ' has this many ', item.spots)
+    //console.log(item.name, ' has this many ', item.spots)
     return <DayListItem 
     key={item.id}
     name={item.name}
@@ -19,7 +19,7 @@ const items = props.days.map((item) => {
   
   
 })
-console.log('ITEMS', items)
+//console.log('ITEMS', items)
 
   return (
     <ul>
