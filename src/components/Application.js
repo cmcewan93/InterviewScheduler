@@ -59,8 +59,7 @@ export default function Application(props) {
       interview={interview}/>
     )
   })
-
-
+  
   return (
     <main className="layout">
       <section className="sidebar">
