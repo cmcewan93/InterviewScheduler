@@ -2,61 +2,64 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 import "components/Application.scss";
 
 export default function Application(props) {
-
+  //component state
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
   
+  //Retrieves state data from api
+  // Every time component changes does another axios call
   useEffect(() => {
 
       Promise.all([
         Promise.resolve(
           axios
-          .get("/api/appointments")
+            .get("/api/appointments")
           ),
-          Promise.resolve(
-            axios
+        Promise.resolve(
+          axios
             .get("/api/days")
-            ),
-          ]).then((all) => {
-            console.log(all[0].data)
-            setState({
-              ...state,
-              appointments: all[0].data,
-              days: all[1].data,
-            })
-          });
-
-  }, [])
-
+          ),
+        Promise.resolve(
+          axios
+            .get("/api/interviewers")
+        ),
+        ]).then((all) => {
+          console.log("@@@@@@", all)
+          setState({
+            ...state,
+            appointments: all[0].data,
+            days: all[1].data,
+            interviewers: all[2].data
+          })
+        });
+  }, [state.day])
+ 
   const setDay = day => setState(prev => ({ ...prev, day }));
-  //const setDays = days => setState(prev => ({ ...prev, days }));
-
+ 
+  //get an array of appointments for a specific day
   const appointments = getAppointmentsForDay(state, state.day)
+
+  //map through the appointmentlist creating an appointment component for each
   const appointmentList = appointments.map((appointment) => {
+    //get interviewer info for that appointment interview
+    console.log({appointment})
+    const interview = getInterview(state, appointment.interview);
     return (<Appointment
-     key={appointment.id} {...appointment}/>
+      key={appointment.id}
+      id={appointment.id}
+      time={appointment.time}
+      interview={interview}/>
     )
   })
 
-  console.log("!@#!@#!@#!@", state.day)
-
-  
-  
-
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/days")
-  //     .then((response) => {
-  //       setDays(response.data)
-  //     })
-  // }, [])
 
   return (
     <main className="layout">
