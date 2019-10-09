@@ -3,24 +3,39 @@ import React, { Fragment } from 'react'
 import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
+import Form from "components/Appointment/Form";
 import useVisualMode from "hooks/useVisualMode";
 import "./styles.scss";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
+const CREATE = "CREATE";
 
 
 export default function Appointment(props) {
-//  console.log(props, ' @#$@#$@ ', props)
-  console.log("appointments", {props})
-  const appointment = props.interview 
-  ? <Show student={props.interview.student} interviewer={props.interview.interviewer} /> 
-  : <Empty />
+  //dereferences object vals
+  const { mode, transition, back } = useVisualMode(
+    //passes initial mode using ternary
+    props.interview ? SHOW : EMPTY
+  );
 
   return (
     <Fragment>
       <Header time={props.time} />
-      {appointment}
+      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === SHOW && (
+        <Show
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+        />
+      )}
+      {mode === CREATE && (
+        <Form 
+          interviewers={[]}
+          onCancel={back}
+          
+        />
+      )}
     </Fragment>
   );
 }

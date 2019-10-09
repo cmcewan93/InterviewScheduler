@@ -4,6 +4,7 @@ import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 import "components/Application.scss";
+import Header from "./Appointment/Header";
 
 export default function Application(props) {
   //component state
@@ -59,7 +60,7 @@ export default function Application(props) {
       interview={interview}/>
     )
   })
-  
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -84,7 +85,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {appointmentList}
-        <Appointment key="last" time="5pm" />
+        <Header time="5pm" /> {/* FIX THIS, suppose to appointment component */} 
       </section>
     </main>
   );
