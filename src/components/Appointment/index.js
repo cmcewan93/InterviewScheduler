@@ -18,7 +18,6 @@ export default function Appointment(props) {
     //passes initial mode using ternary
     props.interview ? SHOW : EMPTY
   );
-
   return (
     <Fragment>
       <Header time={props.time} />
@@ -31,7 +30,7 @@ export default function Appointment(props) {
       )}
       {mode === CREATE && (
         <Form 
-          interviewers={[]}
+          interviewers={props.interviewers}
           onCancel={back}
           
         />

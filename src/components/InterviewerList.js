@@ -4,9 +4,9 @@ import InterviewerListItem from "components/InterviewerListItem"
 import "components/InterviewerList.scss"
 
 export default function InterviewList(props) {
-
+  //console.log('@@@@@@', props)
   const interviewers = props.interviewers.map((interviewer) => {
-    
+  
     return (
       <InterviewerListItem
         avatar={interviewer.avatar}
