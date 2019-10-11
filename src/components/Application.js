@@ -19,7 +19,35 @@ export default function Application(props) {
       setState(prev => ({ ...prev, day }));
     }
   };
- 
+
+  const bookInterview = (id, interview) => {
+    //Creates a new appointment object with updated interview information
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    //copys current appointments array stored in state and updates
+    // with newly created appointment
+    
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({ ...state, appointments});
+    
+    return axios
+    .put(`/api/appointments/${id}`, {
+      interview: interview
+    })
+    .then(response => {
+      setState({ ...state, appointments});
+      //console.log(response)
+      })
+      .catch(error => {
+        console.error(error);
+      })
+  }
+
   // Retrieves state data from api
   // Every time component changes does another axios call
   useEffect(() => {
@@ -37,7 +65,6 @@ export default function Application(props) {
           .get("/api/interviewers")
       ),
       ]).then((all) => {
-        //console.log("@@@@@@", all)
         setState({
           ...state,
           appointments: all[0].data,
@@ -50,7 +77,6 @@ export default function Application(props) {
   )
  
   
- 
   //get an array of appointments for a specific day
   const appointments = getAppointmentsForDay(state, state.day)
   const interviewers = getInterviewersByDay(state, state.day)
@@ -68,6 +94,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
       />
     )
   })
