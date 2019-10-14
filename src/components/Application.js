@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import useApplicationData from "../hooks/useApplicationData"
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview, getInterviewersByDay } from "helpers/selectors";
@@ -7,74 +7,12 @@ import "components/Application.scss";
 import Header from "./Appointment/Header";
 
 export default function Application(props) {
-  //component state
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  });
-  const setDay = day => {
-    if (day !== state.day) {
-      setState(prev => ({ ...prev, day }));
-    }
-  };
-
-  const bookInterview = (id, interview) => {
-    //Creates a new appointment object with updated interview information
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    //copys current appointments array stored in state and updates
-    // with newly created appointment
-    
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    setState({ ...state, appointments});
-    
-    return axios
-    .put(`/api/appointments/${id}`, {
-      interview: interview
-    })
-    .then(response => {
-      setState({ ...state, appointments});
-      //console.log(response)
-      })
-      .catch(error => {
-        console.error(error);
-      })
-  }
-
-  // Retrieves state data from api
-  // Every time component changes does another axios call
-  useEffect(() => {
-    Promise.all([
-      Promise.resolve(
-        axios
-          .get("/api/appointments")
-        ),
-      Promise.resolve(
-        axios
-          .get("/api/days")
-        ),
-      Promise.resolve(
-        axios
-          .get("/api/interviewers")
-      ),
-      ]).then((all) => {
-        setState({
-          ...state,
-          appointments: all[0].data,
-          days: all[1].data,
-          interviewers: all[2].data
-        })
-      });
-    },
-    [state.day]
-  )
+  const {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview
+  } = useApplicationData();
  
   
   //get an array of appointments for a specific day
@@ -86,7 +24,6 @@ export default function Application(props) {
   const appointmentList = appointments.map((appointment) => {
     //get interviewer info for that appointment interview
     const interview = getInterview(state, appointment.interview);
-    // console.log("######", interview)
     return (
       <Appointment
         key={appointment.id}
@@ -95,6 +32,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     )
   })

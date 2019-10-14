@@ -16,8 +16,6 @@ const getAppointmentsForDay = (state, day) => {
 
 //get interviewer for interview
 const getInterview = (state, interview) => {
-  // console.log("I'm being called in get interview", {interview})
-
   if (interview) {
     // assigns value from the state interviewers list using the
     // interviewer id passed in interview object
