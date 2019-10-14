@@ -1,15 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import axios from "axios";
+import { reducer, SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW, SET_SPOT } from "reducers/application"
 
 export default function useApplicationData() {
   /**
    * Manages the application state
    */
-  const [state, setState] = useState({
+  const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
+  });
+
+  /**
+   * Sets the the current day into state
+   * @param {*} day 
+   */
+  const setDay = day => dispatch({
+   type: SET_DAY,
+   value: day
   });
 
   /**
@@ -31,16 +41,19 @@ export default function useApplicationData() {
           .get("/api/interviewers")
       ),
       ]).then((all) => {
-        setState({
-          ...state,
-          appointments: all[0].data,
-          days: all[1].data,
-          interviewers: all[2].data
-        })
+        dispatch({
+          type: SET_APPLICATION_DATA,
+          value: all
+        });
       });
     },
     [state.day]
   )
+  
+  const getDayIndex = date => {
+    const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    return weekDays.indexOf(date);
+  }
 
   /**
    * Books interview for appointment
@@ -64,7 +77,18 @@ export default function useApplicationData() {
       interview: interview
     })
     .then(() => {
-      setState({ ...state, appointments});
+      if(!state.appointments[id].interview) {
+        let tempDay = {...state};
+        tempDay.days[getDayIndex(tempDay.day)].spots -= 1;
+        dispatch({
+          type: SET_SPOT,
+          value: tempDay.days
+        })
+      }
+      dispatch({
+        type: SET_INTERVIEW, 
+        value: appointments
+      });
     })
   }
 
@@ -84,18 +108,18 @@ export default function useApplicationData() {
     return axios
     .delete(`/api/appointments/${id}`, {})
     .then(response => {
-      setState({ ...state, appointments});
+      dispatch({
+        type: SET_INTERVIEW, 
+        value: appointments
+      });
+      let tempDay = {...state}
+      tempDay.days[getDayIndex(tempDay.day)].spots += 1
+      dispatch({
+        type: SET_SPOT,
+        value: tempDay.days
+      })
     })
   }
-  /**
-   * Sets the the current day into state
-   * @param {*} day 
-   */
-  const setDay = day => {
-    if (day !== state.day) {
-      setState(prev => ({ ...prev, day }));
-    }
-  };
 
   return {state, setDay, bookInterview, cancelInterview}
 }
