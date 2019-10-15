@@ -5,15 +5,16 @@ import PropTypes from "prop-types"
 
 export default function InterviewList(props) {
   const interviewers = props.interviewers.map((interviewer) => {
-  
+    console.log('interview', props.interviewers)
+    console.log("CURRENTLY => ", props.interviewer)
     return (
       <InterviewerListItem
         avatar={interviewer.avatar}
         key={interviewer.id}
         interviewId = {interviewer.id}
         name={interviewer.name}
-        setInterviewer={ event => props.setInterviewer(interviewer.id)}
-        selected={interviewer.id === props.interviewer}
+        setInterviewer={ event => props.setInterviewer(props.interviewers[props.interviewers.map(i => i.id).indexOf(interviewer.id)])}
+        selected={interviewer.id === (props.interviewer ? props.interviewer.id : null)}
       
       />
     )

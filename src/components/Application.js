@@ -21,8 +21,10 @@ export default function Application(props) {
 
   //map through the appointmentlist creating an appointment component for each
   const appointmentList = appointments.map((appointment) => {
+    //console.log('this is being called @@@@@')
     //get interviewer info for that appointment interview
     const interview = getInterview(state, appointment.interview);
+    //console.log(interview)
     return (
       <Appointment
         key={appointment.id}

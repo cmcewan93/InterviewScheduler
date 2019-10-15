@@ -3,7 +3,8 @@ import Button from "components/Button";
 import InterviewerList from "components/InterviewerList"
 
 export default function Form(props) {
-  const [interviewer, setInterviewer] = useState([props.interviewer || null]);
+  console.log('interviewer', props)
+  const [interviewer, setInterviewer] = useState(props.interviewer);
   const [name, setName] = useState(props.name || "");
   const [error, setError] = useState("");
 
@@ -22,6 +23,7 @@ export default function Form(props) {
       return;
     }
     setError("");
+    //console.log('ADSFASDFASDFAS', interviewer)
     props.onSave(name, interviewer);
   }
 

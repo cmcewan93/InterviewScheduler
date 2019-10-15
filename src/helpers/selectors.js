@@ -1,6 +1,6 @@
 
 
-const getAppointmentsForDay = (state, day) => {
+export const getAppointmentsForDay = (state, day) => {
   let filteredDay = state.days.find(item => item.name === day);
 
   //If state array is less than 0
@@ -15,21 +15,24 @@ const getAppointmentsForDay = (state, day) => {
 }
 
 //get interviewer for interview
-const getInterview = (state, interview) => {
+export const getInterview = (state, interview) => {
   if (interview) {
+    //console.log('state interviewers', state.interviewers)
+   // console.log('@#!@#$!@', interview.interviewer)
     // assigns value from the state interviewers list using the
     // interviewer id passed in interview object
     const interviewer = state.interviewers[interview.interviewer];
-    interview.interviewer = interviewer;
+    //interview.interviewer = interviewer;
   
-    return interview;
+    return {...interview, interviewer};
   } else {
     return null
   };
 }
 
-const getInterviewersByDay = (state, day) => {
+export const getInterviewersByDay = (state, day) => {
   let interviewersOnDay = []
+  console.log('im being call in getInterviewersByDay')
 
   //filters days array returning the specific day object
   let currentDay = state.days.find(item => item.name === day);
@@ -46,5 +49,5 @@ const getInterviewersByDay = (state, day) => {
   }
   return interviewersOnDay;
 }
-module.exports = { getAppointmentsForDay, getInterview, getInterviewersByDay };
+//export default { getAppointmentsForDay, getInterview, getInterviewersByDay };
 

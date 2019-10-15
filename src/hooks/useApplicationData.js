@@ -17,10 +17,14 @@ export default function useApplicationData() {
    * Sets the the current day into state
    * @param {*} day 
    */
-  const setDay = day => dispatch({
-   type: SET_DAY,
-   value: day
-  });
+  const setDay = (day) => {
+    if(day !== state.day) {
+      dispatch({
+        type: SET_DAY,
+        value: day
+      });
+    }
+  };
 
   /**
    * Retrieves state data from api
@@ -47,7 +51,7 @@ export default function useApplicationData() {
         });
       });
     },
-    [state.day]
+    []
   )
   
   const getDayIndex = date => {
@@ -64,17 +68,24 @@ export default function useApplicationData() {
     //Creates a new appointment object with updated interview information
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: { ...interview, interviewer: interview.interviewer.id }
     };
+
     //copys current appointments array stored in state and updates
     // with newly created appointment
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
+
+    // debugger
+    //console.log('IDDDDDDDDD', interview.interviewer.id)
     return axios
     .put(`/api/appointments/${id}`, {
-      interview: interview
+      interview: {
+        interviewer: interview.interviewer.id,
+        student: interview.student
+      }
     })
     .then(() => {
       if(!state.appointments[id].interview) {
