@@ -5,8 +5,6 @@ import PropTypes from "prop-types"
 
 export default function InterviewList(props) {
   const interviewers = props.interviewers.map((interviewer) => {
-    console.log('interview', props.interviewers)
-    console.log("CURRENTLY => ", props.interviewer)
     return (
       <InterviewerListItem
         avatar={interviewer.avatar}

@@ -77,9 +77,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-
-    // debugger
-    //console.log('IDDDDDDDDD', interview.interviewer.id)
+    
     return axios
     .put(`/api/appointments/${id}`, {
       interview: {
