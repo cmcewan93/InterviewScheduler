@@ -23,3 +23,6 @@ npm run storybook
 ```
 
 ![Alt text](docs/mainpage.png)
+![Alt text](docs/2ndview.png)
+![Alt text](docs/3rdview.png)
+
