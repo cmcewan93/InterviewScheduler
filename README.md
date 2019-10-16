@@ -21,3 +21,5 @@ npm test
 ```sh
 npm run storybook
 ```
+
+![Alt text](docs/mainpage.png)
