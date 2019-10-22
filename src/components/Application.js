@@ -60,7 +60,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {appointmentList}
-        <Header time="5pm" /> {/* FIX THIS, suppose to appointment component */} 
+        <Header time="5pm" /> 
       </section>
     </main>
   );

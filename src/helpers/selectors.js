@@ -20,7 +20,6 @@ export const getInterview = (state, interview) => {
     // assigns value from the state interviewers list using the
     // interviewer id passed in interview object
     const interviewer = state.interviewers[interview.interviewer];
-    //interview.interviewer = interviewer;
   
     return {...interview, interviewer};
   } else {
@@ -29,10 +28,10 @@ export const getInterview = (state, interview) => {
 }
 
 export const getInterviewersByDay = (state, day) => {
-  let interviewersOnDay = []
+  const interviewersOnDay = []
 
   //filters days array returning the specific day object
-  let currentDay = state.days.find(item => item.name === day);
+  const currentDay = state.days.find(item => item.name === day);
   
   if (currentDay) {
     /*
@@ -46,5 +45,5 @@ export const getInterviewersByDay = (state, day) => {
   }
   return interviewersOnDay;
 }
-//export default { getAppointmentsForDay, getInterview, getInterviewersByDay };
+
 

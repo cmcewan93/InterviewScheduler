@@ -23,12 +23,6 @@ const SET_SPOT = "SET_SPOT";
           appointments: action.value
         }
       }
-      case SET_DAY: {
-        return {
-          ...state,
-          appointments: action.value
-        }
-      }
       case SET_SPOT: {
         return {
           ...state,
